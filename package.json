@@ -1,0 +1,11 @@
+{
+  "name": "dawson-city-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ReaIIyBigShrimp/dawson-city-project",
+  "author": "Darryl Dolan-Rathmell <darryl.dolan@hotmail.co.uk>",
+  "license": "MIT",
+  "dependencies": {
+    "live-server": "^1.2.1"
+  }
+}
