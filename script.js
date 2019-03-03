@@ -4,7 +4,7 @@ var mouseX = 0,
     mouseY = 0,
     windowHalfX = window.innerWidth / 2,
     windowHalfY = window.innerHeight / 2,
-    camera, scene, renderer, material, composer;
+    camera, scene, renderer, material, composer, controls;
 
 
 function init() {
@@ -36,8 +36,25 @@ function init() {
         var mesh = new THREE.Mesh(geo, cubeMaterial);
         scene.add(mesh);
     }
-    makeCube();
+    //makeCube();
 
+    let addLighting = () => {
+        let light = new THREE.AmbientLight( 0x404040, 1 ); // soft white light
+        scene.add( light );
+    }
+
+    addLighting();
+    let addControls = () => {
+        controls = new THREE.OrbitControls( camera );
+        //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+        controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+        controls.dampingFactor = 0.25;
+        controls.screenSpacePanning = false;
+        controls.minDistance = 100;
+        controls.maxDistance = 500;
+        controls.maxPolarAngle = Math.PI / 2;
+    }
+    addControls();
     function importTerrain() {
         var loader = new THREE.OBJLoader();
         // load a resource
@@ -54,14 +71,11 @@ function init() {
             },
             // called when loading is in progresses
             function (xhr) {
-
                 console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-
             },
             // called when loading has errors
             function (error) {
-
-                console.log('An error happened');
+                console.log('An error occurred: ' + error);
             }
         );
     }
@@ -81,8 +95,8 @@ function init() {
     effectCopy.renderToScreen = true;
     composer = new THREE.EffectComposer(renderer);
     composer.addPass(renderModel);
-    composer.addPass(effectFXAA);
-    composer.addPass(effectBloom);
+    // composer.addPass(effectFXAA);
+    // composer.addPass(effectBloom);
     composer.addPass(effectCopy);
 
     window.addEventListener('resize', onWindowResize, false);
@@ -123,20 +137,21 @@ function animate() {
     requestAnimationFrame(animate);
     render();
     stats.update();
+    controls.update(); 
 }
 
 function render() {
     document.getElementById("camera").innerHTML = camera.position.x;
     document.getElementById("mouse").innerHTML = mouseX;
-    camera.position.x -= (mouseX + camera.position.x) * .05;
-    camera.position.y -= (-mouseY + camera.position.y) * .05;
-    camera.lookAt(scene.position);
+    // camera.position.x -= (mouseX + camera.position.x) * .05;
+    // camera.position.y -= (-mouseY + camera.position.y) * .05;
+    // camera.lookAt(scene.position);
 
-    var time = Date.now() * 0.0005;
+    /* var time = Date.now() * 0.0005;
     for (var i = 0; i < scene.children.length; i++) {
         var object = scene.children[i];
         if (object instanceof THREE.Line) object.rotation.y = time * (i % 2 ? 1 : -1);
-    }
+    } */
 
     renderer.clear();
     composer.render();
