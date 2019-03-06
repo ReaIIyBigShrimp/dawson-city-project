@@ -4,7 +4,9 @@ var mouseX = 0,
     mouseY = 0,
     windowHalfX = window.innerWidth / 2,
     windowHalfY = window.innerHeight / 2,
-    camera, scene, renderer, material, composer, controls;
+    camera, scene, renderer, material, composer, 
+    controls,
+    directionalLight;
 
 
 function init() {
@@ -39,9 +41,16 @@ function init() {
     //makeCube();
 
     let addLighting = () => {
-        let light = new THREE.AmbientLight( 0x404040, 1 ); // soft white light
+        let light = new THREE.AmbientLight( 0x404040, 2 ); // soft white light
         scene.add( light );
     }
+
+    let addDirectionalLighting = () => {
+        let directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
+        scene.add( directionalLight );
+    }
+
+    addDirectionalLighting();
 
     addLighting();
     let addControls = () => {
@@ -63,10 +72,10 @@ function init() {
             'terrainTest.obj',
             // called when resource is loaded
             function (object) {
-
                 scene.add(object);
                 object.position.set(10,10,10);
                 object.scale.set(30,30,30);
+
                 console.log("Terrain loaded");
             },
             // called when loading is in progresses
