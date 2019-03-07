@@ -16,7 +16,8 @@ function init() {
     camera = new THREE.PerspectiveCamera(33, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.z = 400;
     // Allows for camera swoop action
-    camera.position.y = 10000;
+    camera.position.y = 200;
+    camera.position.x = 200;
     scene = new THREE.Scene();
     renderer = new THREE.WebGLRenderer({
         antialias: false
@@ -28,6 +29,12 @@ function init() {
     
     stats = new Stats();
     container.appendChild( stats.dom );
+
+    var axesHelper = new THREE.AxesHelper( 5 );
+    scene.add( axesHelper );
+
+    axesHelper.position.set(0,100,0);
+    
 
     // Test focus object
     function makeCube() {
@@ -49,7 +56,6 @@ function init() {
         let directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
         scene.add( directionalLight );
     }
-
     addDirectionalLighting();
 
     addLighting();
@@ -60,7 +66,7 @@ function init() {
         controls.dampingFactor = 0.25;
         controls.screenSpacePanning = false;
         controls.minDistance = 100;
-        controls.maxDistance = 500;
+        controls.maxDistance = 700;
         controls.maxPolarAngle = Math.PI / 2;
     }
     addControls();
@@ -109,6 +115,8 @@ function init() {
     composer.addPass(effectCopy);
 
     window.addEventListener('resize', onWindowResize, false);
+
+    
 }
 
 function onWindowResize() {
