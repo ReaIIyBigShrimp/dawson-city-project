@@ -48,12 +48,12 @@ function init() {
     //makeCube();
 
     let addLighting = () => {
-        let light = new THREE.AmbientLight( 0x404040, 2 ); // soft white light
+        let light = new THREE.AmbientLight( 0x404040, 1.5 ); // soft white light
         scene.add( light );
     }
 
     let addDirectionalLighting = () => {
-        let directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
+        let directionalLight = new THREE.DirectionalLight( 0xffffff, 0.2 );
         scene.add( directionalLight );
     }
     addDirectionalLighting();
@@ -68,14 +68,23 @@ function init() {
         controls.minDistance = 100;
         controls.maxDistance = 700;
         controls.maxPolarAngle = Math.PI / 2;
+
+        /* controls = new THREE.FlyControls( camera );
+				controls.movementSpeed = 1000;
+				controls.domElement = renderer.domElement;
+				controls.rollSpeed = Math.PI / 24;
+				controls.autoForward = false;
+				controls.dragToLook = false;
+ */
     }
+
     addControls();
     function importTerrain() {
         var loader = new THREE.OBJLoader();
         // load a resource
         loader.load(
             // resource URL
-            'terrainTest.obj',
+            'terrainTest_01.obj',
             // called when resource is loaded
             function (object) {
                 scene.add(object);
@@ -169,6 +178,9 @@ function render() {
         var object = scene.children[i];
         if (object instanceof THREE.Line) object.rotation.y = time * (i % 2 ? 1 : -1);
     } */
+
+    
+    controls.update();
 
     renderer.clear();
     composer.render();
